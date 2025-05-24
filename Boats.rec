@@ -4,7 +4,6 @@ Category: DeckBoat
 Max Capacity: 6
 Availability: Available
 Price Per Hour: 500.00
-Price Per Day: 10000.00
 Size: Small
 Boat Name: Black Pearl
 Boat Id: 2
@@ -12,7 +11,6 @@ Category: CruiseShip
 Max Capacity: 200
 Availability: Available
 Price Per Hour: 10000.00
-Price Per Day: 200000.00
 Size: Large
 Boat Name: Flying Dutchman
 Boat Id: 3
@@ -20,5 +18,18 @@ Category: CruiseShip
 Max Capacity: 300
 Availability: Available
 Price Per Hour: 15000.00
-Price Per Day: 300000.00
 Size: Large
+Boat Name: Sea Beast
+Boat Id: 6
+Category: Sailboat
+Max Capacity: 50
+Availability: Available
+Price Per Hour: 2000.00
+Size: Medium
+Boat Name: sweeper
+Boat Id: 21
+Category: SpeedBoat
+Max Capacity: 10
+Availability: Available
+Price Per Hour: 2000.00
+Size: Small
