@@ -1,2 +1,0 @@
-I have use uuid generator library: 
-command : sudo apt-get install uuid-dev

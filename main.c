@@ -44,48 +44,93 @@ struct Booking{
 // function that add a new  inputCategory();
 int addBoat();
 int generate_unique_id();
+void inputCategory(char *category);
 struct BoatList ReadBoat();
 struct BoatList searchBoat();
 int searchBooking();
+int deleteBoat();
+int bookBoat();
+int searchBooking();
+int seeAllBooking();
 
 int main (){
-    // int choice;
+    int choice1, choice2, choice3, password;
+    step1:
+    printf("Welcome to AquaRent Boat Managment and Renting System.\n\n");
+    printf("1. Do you want to access user Menu\n");
+    printf("2. Do you want to access admin Menu\n");
+    printf("3. Exit\n");
+    printf("Enter Your Choice: ");
+    scanf("%d", &choice1);
+    do{
+    if(choice1 == 1){
+        do{
+        printf("\n---User Menu---\n\n");
+        printf("1. Book a Boat\n2. See all Boats\n3. Search Boats\n4. Search Your Booking\n5. Exit\n");
+        printf("Enter your choice 1 to 5: ");
+        scanf("%d", &choice2);
+        if(choice2 == 1){
+            bookBoat();
+        }else if(choice2 == 2){
+            ReadBoat();
+        }else if(choice2 == 3){
+            searchBoat();
+        }else if(choice2 == 4){
+            searchBooking();
+        }else if(choice2 == 5){
+            goto step1;
+        }else{
+            printf("Invalid Input!");
+            printf("Enter a correct vlaue 1 to 4: ");
+        }
+        }while (choice2 <= 1 || choice2 >= 5);
+    }
+    if(choice3 == 2){
+        printf("\nEnter Password: ");
+        scanf("%d", &password);
+        if(password == 123){
+            do{
+            printf("\n---Admin Menu---\n\n");
+            printf("1. ADD a Boat\n2. Delete a Boat\n3. See All Bookings\n4. See all Boats\n5. Search Boats\n6. Search Your Booking\n7. Exit\n");
+            printf("Enter Choice 1 to 7: ");
+            scanf("%d", &choice3);
+           if(choice3 == 1){
+               addBoat();
+           }
+           if(choice3 == 2){
+               deleteBoat();
+            }
+            if(choice3 == 3){
+                seeAllBooking();
+           }
+           if(choice3 == 4){
+               ReadBoat();
+           }
+           if(choice3 == 5){
+               searchBoat();
+           }
+           if(choice3 == 6){
+               searchBooking();
+           }
+           if(choice3 == 7){
+               goto step1;
+           }
+        }while(choice3 >= 1 && choice3 <= 3);
+        }else{
+            printf("Incorrect Password!\n");
+            goto step1;
+        }
+    }
+    if(choice1 == 3){
+        return 0;
+    }
+    }while (choice1 >= 1 && choice1 <= 2);
 
-    // printf("Welcome to AquaRent Boat Managment and Renting System.\n\n");
-    // printf("1. Do you want to access user Menu\n");
-    // printf("2. Do you want to access admin Menu\n");
-    // scanf("%d", &choice);
-    // if(choice == 2){
-    //     printf("\nUser Menu\n\n");
-    //     printf("1. Book a Boat\n2. See all Boats\n3. Search Boats\n4. Search Your Booking");
-    //     printf("Enter your choice 1 to 4: ");
-    //     scanf("%d", &choice);
-    //     do{
-    //     if(choice == 1){
-    //         bookBoat();
-    //     }else if(choice == 2){
-    //         ReadBoat();
-    //     }else if(choice == 3){
-    //         searchBoat();
-    //     }else if(choice == 4){
-    //         searchBooking();
-    //     }else{
-    //         printf("Invalid Input!");
-    //         printf("Enter a correct vlaue 1 to 4: ");
-    //     }
-    //     }while (choice > 0 && choice < 5);
-    // }
-    // addBoat();
-    // ReadBoat();          
-    // searchBoat();
-    // deleteBoat();
-    // bookBoat();
-    searchBooking();
     return 0;
 }
 
 
-// ---Main Functions--- 
+// ---Main Functions---
 
 // _Boats_
 
@@ -161,6 +206,7 @@ int addBoat (){
 // Read Boat
 struct BoatList ReadBoat() {
     struct BoatList list;
+    int i;
     FILE *file = fopen("Boats.rec", "r");
     if (file == NULL){
         printf("Could not open file!\n");
@@ -198,7 +244,7 @@ struct BoatList ReadBoat() {
 
     fclose(file);
 
-    for (int i = 0; i < list.count; i++){
+    for (i = 0; i < list.count; i++){
         printf("Boat #%d\n", i + 1);
         printf("  Name: %s\n", list.boats[i].boat_name);
         printf("  ID: %d\n", list.boats[i].boat_id);
@@ -493,7 +539,7 @@ int bookBoat(){
     default:printf("Invalid choice!");break;
     }
 
-    printf("\n\nMeal per person cost: 400");
+    printf("\n\nMeal per person cost: 400\n");
     printf("Do you Want to add meal (1 = yes, 0 = no): ");
     scanf("%d", &booking.additional_facicilies.meal);
     if(booking.additional_facicilies.meal){
@@ -503,7 +549,7 @@ int bookBoat(){
         booking.price += booking.additional_facicilies.mealcost;
     }
 
-    printf("\n\nCost of Life guard: 2000");
+    printf("\n\nCost of Life guard: 2000\n");
     printf("Do you Want to hire a lifeguard (1 = yes, 0 = no): ");
     scanf("%d", &booking.additional_facicilies.lifeguard);
     if(booking.additional_facicilies.lifeguard){
@@ -633,6 +679,87 @@ int searchBooking(){
     }
     if(!found){
         printf("No result Found!");
+    }
+    return 0;
+}
+
+// See All Bookings
+int seeAllBooking(){
+    FILE *file = fopen("Booking.rec", "r");
+    if (file == NULL){
+        printf("Could not open file!\n");
+        return 1;
+    } 
+
+    struct Booking booking[100];
+    int count = 0;
+    char line[100];
+    int found=0, choice2;
+
+
+    while(fgets(line, sizeof(line), file) && count < 100){
+        sscanf(line, "Booking ID: %d", &booking[count].booking_id);
+        
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Boat Name: %[^\n]", &booking[count].boat_name);
+        
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Boat Id: %d", &booking[count].boat_id);
+
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Category: %s", &booking[count].category);
+
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Duration: %d", &booking[count].duration);
+
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Total Price: %f", &booking[count].price);
+
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Location: %s", &booking[count].location);
+
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Meal: %d", &booking[count].additional_facicilies.meal);
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Meal Cost: %f", &booking[count].additional_facicilies.mealcost);
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Lifeguard: %d", &booking[count].additional_facicilies.lifeguard);
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Lifeguard Cost: %d", &booking[count].additional_facicilies.lifeguardcost);
+
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Customer Name: %[^\n]", &booking[count].customer_name);
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Customer Phone: %s", &booking[count].phone_number);
+        fgets(line, sizeof(line), file);
+        sscanf(line, "Customer Email: %s", &booking[count].email);
+        
+        count++;
+    }
+
+    fclose(file);
+
+    for (int i = 0; i < count; i++){
+        found = 1;
+        printf("Booking #%d\n", i + 1);
+        printf("  Booking ID: %d\n", booking[i].booking_id);
+        printf("  Boat Name: %s\n", booking[i].boat_name);
+        printf("  Boat Id: %d\n", booking[i].boat_id);
+        printf("  Category: %s\n", booking[i].category);
+        printf("  Duration: %d\n", booking[i].duration);
+        printf("  Total Price: %.2f\n", booking[i].price);
+        printf("  Location: %s\n", booking[i].location);
+        printf("  Meal: %d\n", booking[i].additional_facicilies.meal);
+        printf("  Meal Cost: %.2f\n", booking[i].additional_facicilies.mealcost);
+        printf("  Lifeguard: %d\n", booking[i].additional_facicilies.lifeguard);
+        printf("  Lifeguard Cost: %d\n", booking[i].additional_facicilies.lifeguardcost);
+        printf("  Customer Name: %s\n", booking[i].customer_name);
+        printf("  Customer Phone: %d\n", booking[i].phone_number);
+        printf("  Customer Email: %s\n", booking[i].email);
+        printf("------------------------\n");
+    }
+    if(!found){
+        printf("No Booking Found!");
     }
     return 0;
 }
