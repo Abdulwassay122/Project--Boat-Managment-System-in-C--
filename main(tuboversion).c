@@ -648,6 +648,7 @@ int searchBooking(){
     struct Booking booking;
     int search_id, found = 0;
     char search_name[30];
+    
     file = fopen("Booking.rec", "r");
     if (file == NULL){
         printf("Could not open booking file or no bookings available!\n");
@@ -723,22 +724,23 @@ int searchBooking(){
     if(!found){
         printf("No booking found with the given ID and name!\n");
     }
-    
+
     return 0;
 }
 
-// see all bookings 
+// see all bookings
 int seeAllBooking(){
-    struct Booking booking[100];
-    int count = 0;
+     int count = 0;
     char line[100];
     int found = 0;
     int i;
+    struct Booking booking[100];
     FILE *file = fopen("Booking.rec", "r");
     if (file == NULL){
-        printf("Could not open file!\n");
-        return 1;
-    } 
+	printf("Could not open file!\n");
+	return 1;
+    }
+
 
 
     while (!feof(file) && count < 100){
@@ -810,19 +812,19 @@ int seeAllBooking(){
     return 0;
 }
 
-// ---Supporter Functions--- 
+// ---Supporter Functions---
 
 
 // function for input boat category
 void inputCategory(char *category){
-    int choice;
+    int choice, i;
     const char *categories[] = {
-        "Yacht", "Sailboat", "CenterConsole", "CruiseShip", "EventBoat",
-        "CabinCruise", "DeckBoat", "SpeedBoat", "Catamaran", "Bowrider"
+	"Yacht", "Sailboat", "CenterConsole", "CruiseShip", "EventBoat",
+	"CabinCruise", "DeckBoat", "SpeedBoat", "Catamaran", "Bowrider"
     };
     do {
-        printf("Select Boat Category:\n");
-        for (int i = 0; i < 10; i++) {
+	printf("Select Boat Category:\n");
+	for (i = 0; i < 10; i++) {
             printf("%d. %s\n", i + 1, categories[i]);
         }
         printf("Enter your choice (1-10): ");
